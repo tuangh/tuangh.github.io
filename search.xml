@@ -11,6 +11,12 @@
         <content type="html"><![CDATA[<img src="/2019/03/26/hello-flutter/flutter.svg" title="Flutter Logo"><p>It was two months ago.. I shared with my friends about <a href="https://flutter.dev/" target="_blank" rel="noopener">Flutter</a> but it looks very new with them. Wow, it already released the first version by Google but I just found it when trying to search how to develop a cross-platform mobile app.</p><p>I wish I can create my own mobile app, more than that it can run both on Android and IOS devices. Flutter is not the only one but the new kid on the block. React Native, Xamarin and several others enable to write a single codebase and deploy it across multiple platforms, sharing as much code. I wanted to find the best fit for me. I just had a try with Reactive Native a little bit but I gave up very soon. Let’s see how far I can go.</p><h2 id="Hello"><a href="#Hello" class="headerlink" title="Hello"></a>Hello</h2><p>I’m from .NET world. Where are you from?</p><h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><h2 id="Learn"><a href="#Learn" class="headerlink" title="Learn"></a>Learn</h2><h2 id="Get-Help"><a href="#Get-Help" class="headerlink" title="Get Help"></a>Get Help</h2>]]></content>
       
       
+      <categories>
+          
+          <category> Flutter </category>
+          
+      </categories>
+      
       
         <tags>
             
