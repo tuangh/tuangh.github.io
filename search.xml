@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Hello Flutter</title>
+      <link href="/2019/03/26/hello-flutter/"/>
+      <url>/2019/03/26/hello-flutter/</url>
+      
+        <content type="html"><![CDATA[<p>It was two months ago when a my friend asked me “What is Flutter” when I shared with him that I just started to learn it. It already got one year old and it is developed by Google. But I just found it when trying to search how to develop a cross-platform mobile app.</p><p>It’s great to create your own mobile app, more than that it can run both on Android and IOS devices. But Flutter is not the only one but the new kid on the block. React Native, Xamarin and several others enable to write a single codebase and deploy it across multiple platforms, sharing as much code. I just try to play with Reactive Native a little bit but I found it’s not intersting. Then I came with <a href="https://flutter.dev/" target="_blank" rel="noopener">Flutter</a>!</p><img src="/2019/03/26/hello-flutter/flutter.svg" width="380" title="Flutter Logo"><h2 id="Hi-Flutter-I’m-from-NET-world-Where-are-you-from"><a href="#Hi-Flutter-I’m-from-NET-world-Where-are-you-from" class="headerlink" title="Hi Flutter, I’m from .NET world. Where are you from?"></a>Hi Flutter, I’m from .NET world. Where are you from?</h2><h2 id="Very-easy-to-start"><a href="#Very-easy-to-start" class="headerlink" title="Very easy to start"></a>Very easy to start</h2><h3 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h3><h3 id="Hello-App"><a href="#Hello-App" class="headerlink" title="Hello App"></a>Hello App</h3><h2 id="Learn-by-yourself"><a href="#Learn-by-yourself" class="headerlink" title="Learn by yourself"></a>Learn by yourself</h2><h2 id="When-I-need-help"><a href="#When-I-need-help" class="headerlink" title="When I need help"></a>When I need help</h2>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> flutter </tag>
+            
+            <tag> dart </tag>
+            
+            <tag> mobile app development </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2019/03/25/hello-world/"/>
+      <url>/2019/03/25/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
