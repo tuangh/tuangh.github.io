@@ -32,7 +32,7 @@
                 const data = await response.json();
                 const price = data.bpi.USD.rate;
 
-                document.getElementById('price-container').innerHTML = `<h1>Bitcoin Price: $${price}</h1>`;
+                document.getElementById('price-container').innerHTML = `<h1>$${price}</h1>`;
             } catch (error) {
                 console.error('Error fetching the Bitcoin price:', error);
                 document.getElementById('price-container').innerHTML = `<h1>Error loading price</h1>`;
