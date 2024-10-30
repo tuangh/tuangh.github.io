@@ -49,9 +49,9 @@
             try {
                 const response = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json');
                 const data = await response.json();
-                const usdPrice = data.bpi.USD.rate.replace(/,/g, ''); // Remove commas for calculation
+                const usdPrice = Math.round(parseFloat(data.bpi.USD.rate.replace(/,/g, ''))); // Round to whole number
 
-                document.getElementById('usd-price-container').innerHTML = `<h1>$${data.bpi.USD.rate}</h1>`;
+                document.getElementById('usd-price-container').innerHTML = `<h1>$${usdPrice}</h1>`;
 
                 // Fetching VND price using an alternative API
                 const vndResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD'); // Example API
