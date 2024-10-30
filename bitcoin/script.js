@@ -134,6 +134,10 @@ let cachedUsdRate = null;
         }
 
         function handleError(message) {
+            document.getElementById('usd-price-container').classList.add('hidden');
+            document.getElementById('vnd-price-container').classList.add('hidden');
+            document.getElementById('another-price-container').classList.add('hidden');
+            
             const errorContainer = document.getElementById('error-container');
 
             errorContainer.innerHTML = `
@@ -142,11 +146,11 @@ let cachedUsdRate = null;
             
             // Show the error container
             errorContainer.classList.remove('hidden');
-        
-            // Add event listener to retry button
-            document.getElementById('retry-button').addEventListener('click', () => {
-                fetchPrices(); // Retry fetching prices
-            });
+            
+            // Auto-refresh after 5 seconds (5000 milliseconds)
+            setTimeout(() => {
+                location.reload();
+            }, 5000);
         }
 
         Date.prototype.getUTCWeek = function() {
