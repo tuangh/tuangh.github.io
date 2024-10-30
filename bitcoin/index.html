@@ -51,7 +51,8 @@
                 const data = await response.json();
                 const usdPrice = Math.round(parseFloat(data.bpi.USD.rate.replace(/,/g, ''))); // Round to whole number
 
-                document.getElementById('usd-price-container').innerHTML = `<h1>$${usdPrice}</h1>`;
+                const formattedUsdPrice = formatPrice(usdPrice);
+                document.getElementById('usd-price-container').innerHTML = `<h1>$${formattedUsdPrice}</h1>`;
 
                 // Fetching VND price using an alternative API
                 const vndResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD'); // Example API
@@ -60,7 +61,7 @@
                 const vndPrice = Math.round(usdPrice * vndRate); // Calculate VND price
 
                 // Format the VND price with dot as thousand separator and comma as decimal separator
-                const formattedVndPrice = formatVND(vndPrice);
+                const formattedVndPrice = formatPrice(vndPrice);
 
                 document.getElementById('vnd-price-container').innerHTML = `<h1>₫${formattedVndPrice}</h1>`;
             } catch (error) {
@@ -70,7 +71,7 @@
             }
         }
 
-        function formatVND(amount) {
+        function formatPrice(amount) {
             // Convert to string and split into whole and decimal parts
             let [whole, decimal] = amount.toString().split('.');
             
