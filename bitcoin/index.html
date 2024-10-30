@@ -34,33 +34,50 @@
             font-size: 3em;
             margin: 0; /* Remove default margin */
         }
+        .price {
+            font-size: 3em;
+            font-weight: bold; /* Make the price bold */
+            transition: color 0.5s ease; /* Smooth color transition */
+        }
+        .green {
+            color: #28a745; /* Bootstrap green */
+        }
+        .red {
+            color: #dc3545; /* Bootstrap red */
+        }
     </style>
 </head>
 <body>
-    <div id="usd-price-container">
+    <div class="price" id="usd-price-container">
         <h1></h1>
     </div>
-    <div id="vnd-price-container">
+    <div class="price" id="vnd-price-container">
         <h1></h1>
     </div>
-    <div id="another-price-container" style="display:none;">
+    <div class="price" id="another-price-container" style="display:none;">
         <h1></h1>
     </div>
 
     <script>
         async function fetchBitcoinPrices() {
             try {
-                const usdResponse = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
-                const usdData = await usdResponse.json();
-                const usdPrice = Math.round(parseFloat(usdData.price)); // Round to whole number
+                // Fetch current Bitcoin price
+                const currentPriceResponse = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+                const currentPriceData = await currentPriceResponse.json();
+                const currentPrice = Math.round(parseFloat(currentPriceData.price));
 
-                const formattedUsdPrice = formatPrice(usdPrice);
+                // Fetch weekly candlestick data to get the open price
+                const candlestickResponse = await fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1w&limit=1');
+                const candlestickData = await candlestickResponse.json();
+                const weeklyOpenPrice = parseFloat(candlestickData[0][1]); // Open price is at index 1
+
+                const formattedUsdPrice = formatPrice(currentPrice);
                 document.getElementById('usd-price-container').innerHTML = `<h1>$${formattedUsdPrice}</h1>`;
 
                 // Fetching VND price using an alternative API
                 const exchangeRates = await fetchUsdExchangeRates();
                 const vndRate = exchangeRates.VND; // Assuming this returns the rate for VND
-                const vndPrice = Math.round(usdPrice * vndRate); // Calculate VND price
+                const vndPrice = Math.round(currentPrice * vndRate); // Calculate VND price
 
                 // Format the price with comma as thousand separator and comma as decimal separator
                 const formattedVndPrice = formatPrice(vndPrice);
@@ -73,13 +90,27 @@
 
                 if (currencyParam === 'CHF') {
                     const chfRate = exchangeRates.CHF; // Assuming this returns the rate for CHF
-                    const chfPrice = Math.round(usdPrice * chfRate); // Calculate CHF price
+                    const chfPrice = Math.round(currentPrice * chfRate); // Calculate CHF price
 
                     // Format the price with comma as thousand separator and comma as decimal separator
                     const formattedChfPrice = formatPrice(chfPrice);
 
                     document.getElementById('another-price-container').style.display = 'block'; // Show CHF container
                     document.getElementById('another-price-container').innerHTML = `<h1>CHF${formattedChfPrice}</h1>`;
+                }
+
+                if (currentPrice >= weeklyOpenPrice) {
+                    document.getElementById('usd-price-container').classList.add('green');
+                    document.getElementById('vnd-price-container').classList.add('green');
+                    document.getElementById('another-price-container').classList.add('green');
+                } else {
+                    document.getElementById('usd-price-container').classList.add('red');
+                    document.getElementById('vnd-price-container').classList.add('red');
+                    document.getElementById('another-price-container').classList.add('red');
+
+                    document.getElementById('usd-price-container').classList.remove('green');
+                    document.getElementById('vnd-price-container').classList.remove('green');
+                    document.getElementById('another-price-container').classList.remove('green');
                 }
             } catch (error) {
                 console.error('Error fetching the Bitcoin prices:', error);
