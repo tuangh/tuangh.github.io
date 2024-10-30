@@ -15,6 +15,7 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -26,29 +27,47 @@
         h1 {
             font-size: 3em;
         }
+        .price {
+            font-size: 2em;
+        }
     </style>
 </head>
 <body>
-    <div id="price-container">
+    <div id="usd-price-container">
+        <h1></h1>
+    </div>
+    <div id="vnd-price-container" class="price">
         <h1></h1>
     </div>
 
     <script>
-        async function fetchBitcoinPrice() {
+        async function fetchBitcoinPrices() {
             try {
                 const response = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json');
                 const data = await response.json();
-                const price = data.bpi.USD.rate;
+                const usdPrice = data.bpi.USD.rate.replace(/,/g, ''); // Remove commas for calculation
 
-                document.getElementById('price-container').innerHTML = `<h1>$${price}</h1>`;
+                document.getElementById('usd-price-container').innerHTML = `<h1>$${data.bpi.USD.rate}</h1>`;
+
+                // Fetching VND price using an alternative API
+                const vndResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD'); // Example API
+                const vndData = await vndResponse.json();
+                const vndRate = vndData.rates.VND; // Assuming this returns the rate for VND
+                const vndPrice = (parseFloat(usdPrice) * vndRate).toFixed(0); // Calculate VND price
+
+                // Format the VND price with commas
+                const formattedVndPrice = new Intl.NumberFormat('vi-VN').format(vndPrice);
+
+                document.getElementById('vnd-price-container').innerHTML = `<h1>₫${formattedVndPrice}</h1>`;
             } catch (error) {
-                console.error('Error fetching the Bitcoin price:', error);
-                document.getElementById('price-container').innerHTML = `<h1>Error loading price</h1>`;
+                console.error('Error fetching the Bitcoin prices:', error);
+                document.getElementById('usd-price-container').innerHTML = `<h1>Error loading price</h1>`;
+                document.getElementById('vnd-price-container').innerHTML = `<h1>Error loading price</h1>`;
             }
         }
 
-        setInterval(fetchBitcoinPrice, 1000);
-        fetchBitcoinPrice(); // Initial fetch
+        setInterval(fetchBitcoinPrices, 1000);
+        fetchBitcoinPrices(); // Initial fetch
     </script>
 </body>
 </html>
