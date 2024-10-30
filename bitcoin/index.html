@@ -57,10 +57,10 @@
                 const vndResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD'); // Example API
                 const vndData = await vndResponse.json();
                 const vndRate = vndData.rates.VND; // Assuming this returns the rate for VND
-                const vndPrice = (parseFloat(usdPrice) * vndRate).toFixed(0); // Calculate VND price
+                const vndPrice = Math.round(usdPrice * vndRate); // Calculate VND price
 
-                // Format the VND price with commas
-                const formattedVndPrice = new Intl.NumberFormat('vi-VN').format(vndPrice);
+                // Format the VND price with dot as thousand separator and comma as decimal separator
+                const formattedVndPrice = formatVND(vndPrice);
 
                 document.getElementById('vnd-price-container').innerHTML = `<h1>₫${formattedVndPrice}</h1>`;
             } catch (error) {
@@ -68,6 +68,17 @@
                 document.getElementById('usd-price-container').innerHTML = `<h1>Error loading price</h1>`;
                 document.getElementById('vnd-price-container').innerHTML = `<h1>Error loading price</h1>`;
             }
+        }
+
+        function formatVND(amount) {
+            // Convert to string and split into whole and decimal parts
+            let [whole, decimal] = amount.toString().split('.');
+            
+            // Format whole part with comma as thousand separator
+            whole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            // Return formatted string with dot as decimal separator if there's a decimal part
+            return decimal ? `${whole}.${decimal}` : whole;
         }
 
         setInterval(fetchBitcoinPrices, 1000);
