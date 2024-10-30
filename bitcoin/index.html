@@ -82,7 +82,7 @@
             return decimal ? `${whole}.${decimal}` : whole;
         }
 
-        setInterval(fetchBitcoinPrices, 1000);
+        setInterval(fetchBitcoinPrices, 10000);
         fetchBitcoinPrices(); // Initial fetch
     </script>
 </body>
