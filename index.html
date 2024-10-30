@@ -3,18 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <script>
-        function showMessage() {
-            alert("Welcome to My Website!");
+    <title>Bitcoin Price Tracker</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            color: white;
+            font-family: Arial, sans-serif;
         }
-    </script>
+        h1 {
+            font-size: 3em;
+        }
+    </style>
 </head>
 <body>
-    <main>
-        <h1>Welcome to My Website</h1>
-        <p>This is my new website hosted on GitHub Pages!</p>
-        <button onclick="showMessage()">Click Me!</button>
-    </main>
+    <div id="price-container">
+        <h1>Loading Bitcoin Price...</h1>
+    </div>
+
+    <script>
+        async function fetchBitcoinPrice() {
+            try {
+                const response = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json');
+                const data = await response.json();
+                const price = data.bpi.USD.rate;
+
+                document.getElementById('price-container').innerHTML = `<h1>Bitcoin Price: $${price}</h1>`;
+            } catch (error) {
+                console.error('Error fetching the Bitcoin price:', error);
+                document.getElementById('price-container').innerHTML = `<h1>Error loading price</h1>`;
+            }
+        }
+
+        // Fetch price every 10 seconds
+        setInterval(fetchBitcoinPrice, 10000);
+        fetchBitcoinPrice(); // Initial fetch
+    </script>
 </body>
 </html>
