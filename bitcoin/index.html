@@ -47,9 +47,9 @@
     <script>
         async function fetchBitcoinPrices() {
             try {
-                const response = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json');
-                const data = await response.json();
-                const usdPrice = Math.round(parseFloat(data.bpi.USD.rate.replace(/,/g, ''))); // Round to whole number
+                const usdResponse = await fetch('https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT');
+                const usdData = await usdResponse.json();
+                const usdPrice = Math.round(parseFloat(usdData.price)); // Round to whole number
 
                 const formattedUsdPrice = formatPrice(usdPrice);
                 document.getElementById('usd-price-container').innerHTML = `<h1>$${formattedUsdPrice}</h1>`;
