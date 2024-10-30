@@ -24,12 +24,12 @@ body {
 }
 
 h1 {
-    font-size: 3em;
+    font-size: 5vw;
+    line-height: 1.5; /* Improve readability */
     margin: 0; /* Remove default margin */
 }
 
 .price {
-    font-weight: 700;
     transition: color 0.5s ease; /* Smooth color transition */
 }
 
