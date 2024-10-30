@@ -50,7 +50,7 @@
     <script>
         async function fetchBitcoinPrices() {
             try {
-                const usdResponse = await fetch('https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT');
+                const usdResponse = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
                 const usdData = await usdResponse.json();
                 const usdPrice = Math.round(parseFloat(usdData.price)); // Round to whole number
 
