@@ -24,7 +24,7 @@ body {
 }
 
 h1 {
-    font-size: 5vw;
+    font-size: 10vw;
     line-height: 1.5; /* Improve readability */
     margin: 0; /* Remove default margin */
 }
