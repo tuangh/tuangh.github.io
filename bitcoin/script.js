@@ -38,7 +38,7 @@ let cachedUsdRate = null;
                     // Format the price with comma as thousand separator and comma as decimal separator
                     const formattedChfPrice = formatPrice(chfPrice);
 
-                    document.getElementById('another-price-container').style.display = 'block'; // Show CHF container
+                    document.getElementById('another-price-container').classList.remove('hidden'); // Show CHF container
                     document.getElementById('another-price-container').innerHTML = `<h1>CHF${formattedChfPrice}</h1>`;
                 }
                 
@@ -60,9 +60,7 @@ let cachedUsdRate = null;
                 }
             } catch (error) {
                 console.error('Error fetching the Bitcoin prices:', error);
-                document.getElementById('usd-price-container').innerHTML = `<h1>Error loading price</h1>`;
-                document.getElementById('vnd-price-container').innerHTML = `<h1>Error loading price</h1>`;
-                document.getElementById('another-price-container').innerHTML = `<h1>Error loading price</h1>`;
+                handleError(error.message);
             }
         }
 
@@ -97,7 +95,7 @@ let cachedUsdRate = null;
                 return cachedUsdRates;
             } catch (error) {
                 console.error('Error fetching USD exchange rate:', error);
-                return null; // Return null or handle error as needed
+                throw error;
             }
         }
 
@@ -131,8 +129,24 @@ let cachedUsdRate = null;
                 return cachedWeeklyData;
             } catch (error) {
                 console.error('Error fetching weekly candlestick data:', error);
-                return null; // Return null or handle error as needed
+                throw error; // Return null or handle error as needed
             }
+        }
+
+        function handleError(message) {
+            const errorContainer = document.getElementById('error-container');
+
+            errorContainer.innerHTML = `
+                <h1>Oh no! 😢</h1>
+            `;
+            
+            // Show the error container
+            errorContainer.classList.remove('hidden');
+        
+            // Add event listener to retry button
+            document.getElementById('retry-button').addEventListener('click', () => {
+                fetchPrices(); // Retry fetching prices
+            });
         }
 
         Date.prototype.getUTCWeek = function() {

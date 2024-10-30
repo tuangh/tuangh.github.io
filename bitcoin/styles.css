@@ -45,3 +45,16 @@ h1 {
 .red {
     color: #dc3545; /* Bootstrap red */
 }
+
+.error {
+    color: #d9534f; /* Fun red color for errors */
+    padding: 15px; /* Padding for better spacing */
+    margin-top: 10px; /* Space above the error message */
+    font-size: 10vw;
+    border-radius: 8px; /* Rounded corners for a softer look */
+    text-align: center; /* Center align text */
+}
+
+.hidden {
+    display: none; /* Hide the element */
+}
