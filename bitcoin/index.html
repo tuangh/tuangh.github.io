@@ -80,7 +80,7 @@
                     const formattedChfPrice = formatPrice(chfPrice);
 
                     document.getElementById('another-price-container').style.display = 'block'; // Show CHF container
-                    document.getElementById('another-price-container').innerHTML = `<h1>₣${formattedChfPrice}</h1>`;
+                    document.getElementById('another-price-container').innerHTML = `<h1>CHF${formattedChfPrice}</h1>`;
                 }
             } catch (error) {
                 console.error('Error fetching the Bitcoin prices:', error);
