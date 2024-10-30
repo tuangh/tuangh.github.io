@@ -13,7 +13,7 @@ body {
     margin: 0;
     background-color: #282c34;
     color: white;
-    font-family: 'BitcoinFont', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
 }
 
 .price-container {
@@ -30,6 +30,7 @@ h1 {
 
 .price {
     font-size: 1.5em;
+    font-weight: 700;
     transition: color 0.5s ease; /* Smooth color transition */
 }
 
