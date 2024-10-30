@@ -1,0 +1,48 @@
+
+@font-face {
+    font-family: 'BitcoinFont';
+    src: url('path/to/BitcoinFont.ttf'); /* Add your font file path */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #282c34;
+    color: white;
+    font-family: 'BitcoinFont', sans-serif;
+}
+
+.price-container {
+    display: flex;
+    flex-direction: column; /* Stack prices vertically */
+    align-items: center; /* Center align items */
+    gap: 10px; /* Space between prices */
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0; /* Remove default margin */
+}
+
+.price {
+    font-size: 3em;
+    font-weight: bold; /* Make the price bold */
+    transition: color 0.5s ease; /* Smooth color transition */
+}
+
+/* Scale effect on price update */
+.digital-price.updated {
+    transform: scale(1.1); /* Slightly enlarge when updated */
+}
+
+.green {
+    color: #28a745; /* Bootstrap green */
+}
+
+.red {
+    color: #dc3545; /* Bootstrap red */
+}
