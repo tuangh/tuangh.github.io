@@ -58,9 +58,8 @@
                 document.getElementById('usd-price-container').innerHTML = `<h1>$${formattedUsdPrice}</h1>`;
 
                 // Fetching VND price using an alternative API
-                const exchangeResponse = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-                const exchangeData = await exchangeResponse.json();
-                const vndRate = exchangeData.rates.VND; // Assuming this returns the rate for VND
+                const exchangeRates = await fetchUsdExchangeRates();
+                const vndRate = exchangeRates.VND; // Assuming this returns the rate for VND
                 const vndPrice = Math.round(usdPrice * vndRate); // Calculate VND price
 
                 // Format the price with comma as thousand separator and comma as decimal separator
@@ -73,7 +72,7 @@
                 const currencyParam = urlParams.get('currency');
 
                 if (currencyParam === 'CHF') {
-                    const chfRate = exchangeData.rates.CHF; // Assuming this returns the rate for CHF
+                    const chfRate = exchangeRates.CHF; // Assuming this returns the rate for CHF
                     const chfPrice = Math.round(usdPrice * chfRate); // Calculate CHF price
 
                     // Format the price with comma as thousand separator and comma as decimal separator
@@ -99,6 +98,32 @@
 
             // Return formatted string with dot as decimal separator if there's a decimal part
             return decimal ? `${whole}.${decimal}` : whole;
+        }
+
+        async function fetchUsdExchangeRates() {
+            const cacheDuration = 86400000; // 24 hours in milliseconds
+            let cachedUsdRate = null;
+            let cacheTimestamp = null;
+
+            // Check if we have a cached value and if it's still valid
+            if (cachedUsdRate && cacheTimestamp && (Date.now() - cacheTimestamp < cacheDuration)) {
+                console.log(`Using cached USD rate: ${cachedUsdRate}`);
+                return cachedUsdRate;
+            }
+
+            try {
+                // Fetch the current USD exchange rate from Binance
+                const response = await fetch('https://open.er-api.com/v6/latest/USD');
+                const exchangeData = await response.json();
+                cachedUsdRates = { VND: exchangeData.rates.VND, CHF: exchangeData.rates.CHF}; // Store the fetched rates
+                cacheTimestamp = Date.now(); // Update the timestamp
+
+                //console.log(cachedUsdRates);
+                return cachedUsdRates;
+            } catch (error) {
+                console.error('Error fetching USD exchange rate:', error);
+                return null; // Return null or handle error as needed
+            }
         }
 
         setInterval(fetchBitcoinPrices, 10000);
