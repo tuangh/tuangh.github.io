@@ -1,163 +1,175 @@
 let cachedUsdRate = null;
-        let cachedWeeklyData = null;
-        let cacheUsdRateTimestamp = null;
-        let cacheWeeklyTimestamp = null;
+let cachedWeeklyData = null;
+let cacheUsdRateTimestamp = null;
+let cacheWeeklyTimestamp = null;
 
-        async function fetchBitcoinPrices() {
-            try {
-                // Fetch current Bitcoin price
-                const currentPriceResponse = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
-                const currentPriceData = await currentPriceResponse.json();
-                const currentPrice = Math.round(parseFloat(currentPriceData.price));
+async function fetchBitcoinPrices() {
+    try {
+        // Fetch current Bitcoin price
+        const currentPriceResponse = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+        const currentPriceData = await currentPriceResponse.json();
+        const currentPrice = Math.round(parseFloat(currentPriceData.price));
 
-                // Get weekly open price from cached data
-                const weeklyData = await fetchWeeklyCandlestickData();
-                const weeklyOpenPrice = weeklyData ? weeklyData.openPrice : null;
+        // Get weekly open price from cached data
+        const weeklyData = await fetchWeeklyCandlestickData();
+        const weeklyOpenPrice = weeklyData ? weeklyData.openPrice : null;
 
-                const formattedUsdPrice = formatPrice(currentPrice);
-                document.getElementById('usd-price-container').innerHTML = `<h1>$${formattedUsdPrice}</h1>`;
+        const formattedUsdPrice = formatPrice(currentPrice);
+        document.getElementById('usd-price-container').innerHTML = `<h1>$${formattedUsdPrice}</h1>`;
 
-                // Fetching VND price using an alternative API
-                const exchangeRates = await fetchUsdExchangeRates();
-                const vndRate = exchangeRates.VND; // Assuming this returns the rate for VND
-                const vndPrice = Math.round(currentPrice * vndRate); // Calculate VND price
+        // Fetching VND price using an alternative API
+        const exchangeRates = await fetchUsdExchangeRates();
+        const vndRate = exchangeRates.VND; // Assuming this returns the rate for VND
+        const vndPrice = Math.round(currentPrice * vndRate); // Calculate VND price
 
-                // Format the price with comma as thousand separator and comma as decimal separator
-                const formattedVndPrice = formatPrice(vndPrice);
+        // Format the price with comma as thousand separator and comma as decimal separator
+        const formattedVndPrice = formatPrice(vndPrice);
 
-                document.getElementById('vnd-price-container').innerHTML = `<h1>₫${formattedVndPrice}</h1>`;
+        document.getElementById('vnd-price-container').innerHTML = `<h1>₫${formattedVndPrice}</h1>`;
 
-                // Check if 'currency' parameter exists in the URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const currencyParam = urlParams.get('currency');
+        // Check if 'currency' parameter exists in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currencyParam = urlParams.get('currency');
 
-                if (currencyParam === 'CHF') {
-                    const chfRate = exchangeRates.CHF; // Assuming this returns the rate for CHF
-                    const chfPrice = Math.round(currentPrice * chfRate); // Calculate CHF price
+        if (currencyParam === 'CHF') {
+            const chfRate = exchangeRates.CHF; // Assuming this returns the rate for CHF
+            const chfPrice = Math.round(currentPrice * chfRate); // Calculate CHF price
 
-                    // Format the price with comma as thousand separator and comma as decimal separator
-                    const formattedChfPrice = formatPrice(chfPrice);
+            // Format the price with comma as thousand separator and comma as decimal separator
+            const formattedChfPrice = formatPrice(chfPrice);
 
-                    document.getElementById('another-price-container').classList.remove('hidden'); // Show CHF container
-                    document.getElementById('another-price-container').innerHTML = `<h1>CHF${formattedChfPrice}</h1>`;
-                }
-                
-                if (weeklyData != null)
-                {
-                    if (currentPrice >= weeklyOpenPrice) {
-                        document.getElementById('usd-price-container').classList.add('green');
-                        document.getElementById('vnd-price-container').classList.add('green');
-                        document.getElementById('another-price-container').classList.add('green');
-                    } else {
-                        document.getElementById('usd-price-container').classList.add('red');
-                        document.getElementById('vnd-price-container').classList.add('red');
-                        document.getElementById('another-price-container').classList.add('red');
+            document.getElementById('another-price-container').classList.remove('hidden'); // Show CHF container
+            document.getElementById('another-price-container').innerHTML = `<h1>CHF${formattedChfPrice}</h1>`;
+        }
+        
+        if (weeklyData != null)
+        {
+            if (currentPrice >= weeklyOpenPrice) {
+                document.getElementById('usd-price-container').classList.add('green');
+                document.getElementById('vnd-price-container').classList.add('green');
+                document.getElementById('another-price-container').classList.add('green');
+            } else {
+                document.getElementById('usd-price-container').classList.add('red');
+                document.getElementById('vnd-price-container').classList.add('red');
+                document.getElementById('another-price-container').classList.add('red');
 
-                        document.getElementById('usd-price-container').classList.remove('green');
-                        document.getElementById('vnd-price-container').classList.remove('green');
-                        document.getElementById('another-price-container').classList.remove('green');
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching the Bitcoin prices:', error);
-                handleError(error.message);
+                document.getElementById('usd-price-container').classList.remove('green');
+                document.getElementById('vnd-price-container').classList.remove('green');
+                document.getElementById('another-price-container').classList.remove('green');
             }
         }
+    } catch (error) {
+        console.error('Error fetching the Bitcoin prices:', error);
+        handleError(error.message);
+    }
+}
 
-        function formatPrice(amount) {
-            // Convert to string and split into whole and decimal parts
-            let [whole, decimal] = amount.toString().split('.');
-            
-            // Format whole part with comma as thousand separator
-            whole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+function formatPrice(amount) {
+    // Convert to string and split into whole and decimal parts
+    let [whole, decimal] = amount.toString().split('.');
+    
+    // Format whole part with comma as thousand separator
+    whole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-            // Return formatted string with dot as decimal separator if there's a decimal part
-            return decimal ? `${whole}.${decimal}` : whole;
+    // Return formatted string with dot as decimal separator if there's a decimal part
+    return decimal ? `${whole}.${decimal}` : whole;
+}
+
+async function fetchUsdExchangeRates() {
+    const cacheDuration = 86400000; // 24 hours in milliseconds
+
+    // Check if we have a cached value and if it's still valid
+    if (cachedUsdRate && cacheUsdRateTimestamp && (Date.now() - cacheUsdRateTimestamp < cacheDuration)) {
+        //console.log(`Using cached USD rate: ${cachedUsdRate}`);
+        return cachedUsdRate;
+    }
+
+    try {
+        // Fetch the current USD exchange rate from Binance
+        const response = await fetch('https://open.er-api.com/v6/latest/USD');
+        const exchangeData = await response.json();
+        cachedUsdRates = { VND: exchangeData.rates.VND, CHF: exchangeData.rates.CHF}; // Store the fetched rates
+        cacheUsdRateTimestamp = Date.now(); // Update the timestamp
+
+        //console.log('Fetched exchange rates');
+        return cachedUsdRates;
+    } catch (error) {
+        console.error('Error fetching USD exchange rate:', error);
+        throw error;
+    }
+}
+
+async function fetchWeeklyCandlestickData() {
+    const cacheDuration = 86400000; // 24 hours in milliseconds
+
+    // Check if we have cached data and if it's still valid
+    if (cachedWeeklyData && cacheWeeklyTimestamp && (Date.now() - cacheWeeklyTimestamp < cacheDuration)) {
+        const now = new Date();
+        const lastCachedDate = new Date(cacheWeeklyTimestamp);
+        
+        // Check if the cached data is from the current week
+        if (now.getUTCFullYear() === lastCachedDate.getUTCFullYear() && 
+            now.getUTCWeek() === lastCachedDate.getUTCWeek()) {
+            //console.log('Using cached weekly candlestick data:', cachedWeeklyData);
+            return cachedWeeklyData;
         }
+    }
 
-        async function fetchUsdExchangeRates() {
-            const cacheDuration = 86400000; // 24 hours in milliseconds
+    try {
+        // Fetch weekly candlestick data from Binance
+        const response = await fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1w&limit=1');
+        const data = await response.json();
+        const weeklyOpenPrice = parseFloat(data[0][1]); // Open price is at index 1
 
-            // Check if we have a cached value and if it's still valid
-            if (cachedUsdRate && cacheUsdRateTimestamp && (Date.now() - cacheUsdRateTimestamp < cacheDuration)) {
-                //console.log(`Using cached USD rate: ${cachedUsdRate}`);
-                return cachedUsdRate;
-            }
+        // Cache the fetched data and timestamp
+        cachedWeeklyData = { openPrice: weeklyOpenPrice };
+        cacheWeeklyTimestamp = Date.now(); // Update the timestamp
 
-            try {
-                // Fetch the current USD exchange rate from Binance
-                const response = await fetch('https://open.er-api.com/v6/latest/USD');
-                const exchangeData = await response.json();
-                cachedUsdRates = { VND: exchangeData.rates.VND, CHF: exchangeData.rates.CHF}; // Store the fetched rates
-                cacheUsdRateTimestamp = Date.now(); // Update the timestamp
+        //console.log('Fetched new weekly candlestick data:', cachedWeeklyData);
+        return cachedWeeklyData;
+    } catch (error) {
+        console.error('Error fetching weekly candlestick data:', error);
+        throw error; // Return null or handle error as needed
+    }
+}
 
-                //console.log('Fetched exchange rates');
-                return cachedUsdRates;
-            } catch (error) {
-                console.error('Error fetching USD exchange rate:', error);
-                throw error;
-            }
-        }
+function handleError(message) {
+    document.getElementById('usd-price-container').classList.add('hidden');
+    document.getElementById('vnd-price-container').classList.add('hidden');
+    document.getElementById('another-price-container').classList.add('hidden');
+    
+    const errorContainer = document.getElementById('error-container');
 
-        async function fetchWeeklyCandlestickData() {
-            const cacheDuration = 86400000; // 24 hours in milliseconds
+    errorContainer.innerHTML = `
+        <h1>Oh no! 😢</h1>
+    `;
+    
+    // Show the error container
+    errorContainer.classList.remove('hidden');
+    
+    // Auto-refresh after 5 seconds (5000 milliseconds)
+    setTimeout(() => {
+        location.reload();
+    }, 5000);
+}
 
-            // Check if we have cached data and if it's still valid
-            if (cachedWeeklyData && cacheWeeklyTimestamp && (Date.now() - cacheWeeklyTimestamp < cacheDuration)) {
-                const now = new Date();
-                const lastCachedDate = new Date(cacheWeeklyTimestamp);
-                
-                // Check if the cached data is from the current week
-                if (now.getUTCFullYear() === lastCachedDate.getUTCFullYear() && 
-                    now.getUTCWeek() === lastCachedDate.getUTCWeek()) {
-                    //console.log('Using cached weekly candlestick data:', cachedWeeklyData);
-                    return cachedWeeklyData;
-                }
-            }
+// Function to refresh the page after one week
+function autoRefresh() {
+    // Set the time for one week (in milliseconds)
+    const oneWeek = 3 * 24 * 60 * 60 * 1000; // 7 days
+    setTimeout(() => {
+        location.reload(); // Refresh the page
+    }, oneWeek);
+}
 
-            try {
-                // Fetch weekly candlestick data from Binance
-                const response = await fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1w&limit=1');
-                const data = await response.json();
-                const weeklyOpenPrice = parseFloat(data[0][1]); // Open price is at index 1
+Date.prototype.getUTCWeek = function() {
+    const date = new Date(Date.UTC(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate()));
+    date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7)); // Thursday of this week
+    return Math.ceil((((date - new Date(Date.UTC(date.getUTCFullYear(), 0, 1))) / 86400000) + 1) / 7);
+};
 
-                // Cache the fetched data and timestamp
-                cachedWeeklyData = { openPrice: weeklyOpenPrice };
-                cacheWeeklyTimestamp = Date.now(); // Update the timestamp
+// Call the autoRefresh function when the page loads
+window.onload = autoRefresh;
 
-                //console.log('Fetched new weekly candlestick data:', cachedWeeklyData);
-                return cachedWeeklyData;
-            } catch (error) {
-                console.error('Error fetching weekly candlestick data:', error);
-                throw error; // Return null or handle error as needed
-            }
-        }
-
-        function handleError(message) {
-            document.getElementById('usd-price-container').classList.add('hidden');
-            document.getElementById('vnd-price-container').classList.add('hidden');
-            document.getElementById('another-price-container').classList.add('hidden');
-            
-            const errorContainer = document.getElementById('error-container');
-
-            errorContainer.innerHTML = `
-                <h1>Oh no! 😢</h1>
-            `;
-            
-            // Show the error container
-            errorContainer.classList.remove('hidden');
-            
-            // Auto-refresh after 5 seconds (5000 milliseconds)
-            setTimeout(() => {
-                location.reload();
-            }, 5000);
-        }
-
-        Date.prototype.getUTCWeek = function() {
-            const date = new Date(Date.UTC(this.getUTCFullYear(), this.getUTCMonth(), this.getUTCDate()));
-            date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7)); // Thursday of this week
-            return Math.ceil((((date - new Date(Date.UTC(date.getUTCFullYear(), 0, 1))) / 86400000) + 1) / 7);
-        };
-
-        setInterval(fetchBitcoinPrices, 10000);
-        fetchBitcoinPrices(); // Initial fetch
+setInterval(fetchBitcoinPrices, 10000);
+fetchBitcoinPrices(); // Initial fetch
