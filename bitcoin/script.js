@@ -148,7 +148,7 @@ function celebrateAth(currentPrice) {
         celebrating = true;
 
         // Create confetti effect
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 10; i++) {
             let confetti = document.createElement('div');
             confetti.className = 'confetti';
             confetti.style.left = `${Math.random() * 100}vw`;
@@ -162,7 +162,7 @@ function celebrateAth(currentPrice) {
         }
 
         // Create firework effect
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) {
             let firework = document.createElement('div');
             firework.className = 'firework';
             firework.style.left = `${Math.random() * 100}vw`;
