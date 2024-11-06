@@ -58,3 +58,53 @@ h1 {
 .hidden {
     display: none; /* Hide the element */
 }
+/* ATH celebration */
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.confetti {
+    position: fixed;
+    animation: confetti-fall linear infinite;
+    opacity: 0;
+}
+
+@keyframes firework {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+.firework {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background-color: gold;
+    border-radius: 50%;
+    animation: firework 1.5s ease-out infinite;
+}
+
+#prices {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: white;
+    padding: 10px;
+    border: 1px solid black;
+    z-index: 1000;
+}
