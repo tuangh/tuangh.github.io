@@ -73,7 +73,7 @@ function celebrateAth(currentPrice) {
         localStorage.setItem('cachedMaxPrice', cachedMaxPrice);
 
         // Create confetti effect
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 50; i++) {
             let confetti = document.createElement('div');
             confetti.className = 'confetti';
             confetti.style.left = `${Math.random() * 100}vw`;
