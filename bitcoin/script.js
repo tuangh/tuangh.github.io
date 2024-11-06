@@ -138,7 +138,7 @@ async function fetchWeeklyCandlestickData() {
 }
 
 function celebrateAth(currentPrice) {
-    if (true || !cachedMaxPrice || currentPrice > cachedMaxPrice + 100) {
+    if (!cachedMaxPrice || currentPrice > cachedMaxPrice + 100) {
         cachedMaxPrice = currentPrice;
         localStorage.setItem('cachedMaxPrice', cachedMaxPrice);
 
