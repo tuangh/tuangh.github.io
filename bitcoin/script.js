@@ -143,7 +143,22 @@ function celebrateAth(currentPrice) {
         localStorage.setItem('cachedMaxPrice', cachedMaxPrice);
 
         if (celebrating)
-            return;
+        {
+            // Slowly remove confetti and firework elements
+            const confettiElements = document.querySelectorAll('.confetti');
+            confettiElements.forEach(element => {
+                element.style.transition = 'opacity 2s';
+                element.style.opacity = '0';
+                setTimeout(() => element.remove(), 2000);
+            });
+
+            const fireworkElements = document.querySelectorAll('.firework');
+            fireworkElements.forEach(element => {
+                element.style.transition = 'opacity 2s';
+                element.style.opacity = '0';
+                setTimeout(() => element.remove(), 2000);
+            });
+        }
 
         celebrating = true;
 
