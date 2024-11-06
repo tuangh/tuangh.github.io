@@ -3,6 +3,7 @@ let cachedUsdRate = null;
 let cachedWeeklyData = null;
 let cacheUsdRateTimestamp = null;
 let cacheWeeklyTimestamp = null;
+let celebrating = false;
 
 async function fetchBitcoinPrices() {
     try {
@@ -64,45 +65,6 @@ async function fetchBitcoinPrices() {
     } catch (error) {
         console.error('Error fetching the Bitcoin prices:', error);
         handleError(error.message);
-    }
-}
-
-function celebrateAth(currentPrice) {
-    if (true || !cachedMaxPrice || currentPrice > cachedMaxPrice + 100) {
-        cachedMaxPrice = currentPrice;
-        localStorage.setItem('cachedMaxPrice', cachedMaxPrice);
-
-        // Create confetti effect
-        for (let i = 0; i < 50; i++) {
-            let confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.left = `${Math.random() * 100}vw`;
-            confetti.style.top = `${Math.random() * 100}vh`;
-            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            confetti.style.width = `${Math.random() * 10 + 5}px`;
-            confetti.style.height = `${Math.random() * 10 + 5}px`;
-            confetti.style.borderRadius = `${Math.random() * 50}%`;
-            confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
-            document.body.appendChild(confetti);
-        }
-
-        // Create firework effect
-        for (let i = 0; i < 10; i++) {
-            let firework = document.createElement('div');
-            firework.className = 'firework';
-            firework.style.left = `${Math.random() * 100}vw`;
-            firework.style.top = `${Math.random() * 100}vh`;
-            firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            firework.style.animationDelay = `${Math.random() * 2}s`;
-            document.body.appendChild(firework);
-        }
-    } else {
-        // Remove confetti and firework elements
-        const confettiElements = document.querySelectorAll('.confetti');
-        confettiElements.forEach(element => element.remove());
-
-        const fireworkElements = document.querySelectorAll('.firework');
-        fireworkElements.forEach(element => element.remove());
     }
 }
 
@@ -172,6 +134,51 @@ async function fetchWeeklyCandlestickData() {
     } catch (error) {
         console.error('Error fetching weekly candlestick data:', error);
         throw error; // Return null or handle error as needed
+    }
+}
+
+function celebrateAth(currentPrice) {
+    if (true || !cachedMaxPrice || currentPrice > cachedMaxPrice + 100) {
+        cachedMaxPrice = currentPrice;
+        localStorage.setItem('cachedMaxPrice', cachedMaxPrice);
+
+        if (celebrating)
+            return;
+
+        celebrating = true;
+
+        // Create confetti effect
+        for (let i = 0; i < 50; i++) {
+            let confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = `${Math.random() * 100}vw`;
+            confetti.style.top = `${Math.random() * 100}vh`;
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            confetti.style.width = `${Math.random() * 10 + 5}px`;
+            confetti.style.height = `${Math.random() * 10 + 5}px`;
+            confetti.style.borderRadius = `${Math.random() * 50}%`;
+            confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            document.body.appendChild(confetti);
+        }
+
+        // Create firework effect
+        for (let i = 0; i < 10; i++) {
+            let firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = `${Math.random() * 100}vw`;
+            firework.style.top = `${Math.random() * 100}vh`;
+            firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            firework.style.animationDelay = `${Math.random() * 2}s`;
+            document.body.appendChild(firework);
+        }
+    } else {
+        celebrating = false;
+        // Remove confetti and firework elements
+        const confettiElements = document.querySelectorAll('.confetti');
+        confettiElements.forEach(element => element.remove());
+
+        const fireworkElements = document.querySelectorAll('.firework');
+        fireworkElements.forEach(element => element.remove());
     }
 }
 
