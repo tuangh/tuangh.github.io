@@ -1,4 +1,4 @@
-let cachedMaxPrice = localStorage.getItem('cachedMaxPrice') ? parseFloat(localStorage.getItem('cachedMaxPrice')) : null;
+let cachedMaxPrice = localStorage.getItem('cachedMaxPrice') ? parseFloat(localStorage.getItem('cachedMaxPrice')) : 0;
 let cachedUsdRate = null;
 let cachedWeeklyData = null;
 let cacheUsdRateTimestamp = null;
@@ -138,6 +138,13 @@ async function fetchWeeklyCandlestickData() {
 }
 
 function celebrateAth(currentPrice) {
+    if (celebrating) {
+        // If we're already celebrating, only turn off the celebration in 30 seconds but don't block other operations
+        setTimeout(() => {
+            celebrating = false;
+        }, 60000);
+    }
+
     if (!cachedMaxPrice || currentPrice > cachedMaxPrice + 100) {
         cachedMaxPrice = currentPrice;
         localStorage.setItem('cachedMaxPrice', cachedMaxPrice);
