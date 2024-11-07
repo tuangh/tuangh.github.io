@@ -12,7 +12,16 @@ async function fetchBitcoinPrices() {
         const currentPriceData = await currentPriceResponse.json();
         const currentPrice = Math.round(parseFloat(currentPriceData.price));
 
-        celebrateAth(currentPrice);
+        if (!cachedMaxPrice || currentPrice > cachedMaxPrice + 100) {
+            cachedMaxPrice = currentPrice;
+            localStorage.setItem('cachedMaxPrice', cachedMaxPrice);
+
+            celebrating = true;
+        } else {
+            setTimeout(() => {
+                celebrating = false;
+            }, 21000);
+        }
 
         // Get weekly open price from cached data
         const weeklyData = await fetchWeeklyCandlestickData();
@@ -137,40 +146,33 @@ async function fetchWeeklyCandlestickData() {
     }
 }
 
-function celebrateAth(currentPrice) {
+function celebrateAth() {
     if (celebrating) {
-        // If we're already celebrating, only turn off the celebration in 30 seconds but don't block other operations
-        setTimeout(() => {
-            celebrating = false;
-        }, 60000);
-    }
+        // Slowly remove confetti and firework elements
+        const confettiElements = document.querySelectorAll('.confetti');
+        confettiElements.forEach(element => {
+            element.style.transition = 'opacity 2s';
+            element.style.opacity = '0';
+            setTimeout(() => element.remove(), 2000);
+        });
 
-    if (!cachedMaxPrice || currentPrice > cachedMaxPrice + 100) {
-        cachedMaxPrice = currentPrice;
-        localStorage.setItem('cachedMaxPrice', cachedMaxPrice);
+        const fireworkElements = document.querySelectorAll('.firework');
+        fireworkElements.forEach(element => {
+            element.style.transition = 'opacity 2s';
+            element.style.opacity = '0';
+            setTimeout(() => element.remove(), 2000);
+        });
 
-        if (celebrating)
-        {
-            // Slowly remove confetti and firework elements
-            const confettiElements = document.querySelectorAll('.confetti');
-            confettiElements.forEach(element => {
-                element.style.transition = 'opacity 2s';
-                element.style.opacity = '0';
-                setTimeout(() => element.remove(), 2000);
-            });
+        const balloonElements = document.querySelectorAll('.bitcoin-firework');
+        balloonElements.forEach(element => {
+            element.style.transition = 'opacity 2s';
+            element.style.opacity = '0';
+            setTimeout(() => element.remove(), 2000);
+        });
 
-            const fireworkElements = document.querySelectorAll('.firework');
-            fireworkElements.forEach(element => {
-                element.style.transition = 'opacity 2s';
-                element.style.opacity = '0';
-                setTimeout(() => element.remove(), 2000);
-            });
-        }
-
-        celebrating = true;
 
         // Create confetti effect
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 50; i++) {
             let confetti = document.createElement('div');
             confetti.className = 'confetti';
             confetti.style.left = `${Math.random() * 100}vw`;
@@ -184,23 +186,40 @@ function celebrateAth(currentPrice) {
         }
 
         // Create firework effect
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 32; i++) {
             let firework = document.createElement('div');
             firework.className = 'firework';
             firework.style.left = `${Math.random() * 100}vw`;
             firework.style.top = `${Math.random() * 100}vh`;
+            let size = `${Math.random() * 30 + 20}px`;
+            firework.style.width = size;
+            firework.style.height = size;
             firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            firework.style.animationDelay = `${Math.random() * 2}s`;
+            document.body.appendChild(firework);
+        }
+
+        // Create Bitcoin firework effect
+        for (let i = 0; i < 21; i++) {
+            let firework = document.createElement('div');
+            firework.className = 'bitcoin-firework';
+            firework.style.left = `${Math.random() * 100}vw`;
+            firework.style.top = `${Math.random() * 100}vh`;
+            let size = `${Math.random() * 30 + 20}px`;
+            firework.style.width = size;
+            firework.style.height = size;
+            firework.innerHTML = '<div class="bitcoin-icon"><img src="bitcoin.png" alt="Bitcoin" ></div>';
             document.body.appendChild(firework);
         }
     } else {
-        celebrating = false;
         // Remove confetti and firework elements
         const confettiElements = document.querySelectorAll('.confetti');
         confettiElements.forEach(element => element.remove());
 
         const fireworkElements = document.querySelectorAll('.firework');
         fireworkElements.forEach(element => element.remove());
+
+        const balloonElements = document.querySelectorAll('.bitcoin-firework');
+        balloonElements.forEach(element => element.remove());
     }
 }
 
@@ -244,3 +263,5 @@ window.onload = autoRefresh;
 
 setInterval(fetchBitcoinPrices, 10000);
 fetchBitcoinPrices(); // Initial fetch
+
+setInterval(celebrateAth, 1000);

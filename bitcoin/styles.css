@@ -99,6 +99,40 @@ h1 {
     animation: firework 1.5s ease-out infinite;
 }
 
+@keyframes bitcoin-firework {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+.bitcoin-firework {
+    position: fixed;
+    animation: bitcoin-firework 1.5s ease-out infinite;
+}
+
+.bitcoin-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: gold;
+    border-radius: 50%;
+    font-size: 2em;
+    color: black;
+}
+
+.bitcoin-icon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
 #prices {
     position: fixed;
     top: 10px;
